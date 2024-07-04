@@ -1,0 +1,15 @@
+{
+    "postgreDbConfig":{
+        "username":"admin",
+        "password":"admin",
+        "host":"localhost",
+        "port":5432,
+        "dbName":"myappDb",
+        "sslMode":"disable"
+    },
+
+    "jwt":{
+        "secret":"secret_key_here",
+        "expirationTimeInDay":30
+    }
+}
