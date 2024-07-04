@@ -80,7 +80,7 @@ func (ctrl *UserHandler) GetUserByID(c *gin.Context) {
 }
 
 // @Tags Users
-// @Param user body users.CreateUserRequest true "entity to create"
+// @Param user body user.CreateUserRequest true "entity to create"
 // @Router /users [post]
 func (ctrl *UserHandler) CreateUser(c *gin.Context) {
 	var req user.CreateUserRequest
@@ -105,7 +105,7 @@ func (ctrl *UserHandler) CreateUser(c *gin.Context) {
 
 // @Tags Users
 // @Param id path uint true "id"
-// @Param user body users.UpdateUserRequest true "entity to update"
+// @Param user body user.UpdateUserRequest true "entity to update"
 // @Router /users/{id} [put]
 func (ctrl *UserHandler) UpdateUser(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))

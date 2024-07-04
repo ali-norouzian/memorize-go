@@ -4,7 +4,7 @@
         "password":"admin",
         "host":"localhost",
         "port":5432,
-        "dbName":"myappDb",
+        "dbName":"memorize_db",
         "sslMode":"disable"
     },
 

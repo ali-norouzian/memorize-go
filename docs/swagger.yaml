@@ -1,0 +1,99 @@
+definitions:
+  memorize_internal_service_authentication_user.CreateUserRequest:
+    properties:
+      email:
+        maxLength: 100
+        type: string
+      password:
+        maxLength: 300
+        type: string
+      username:
+        maxLength: 100
+        type: string
+    required:
+    - email
+    - password
+    - username
+    type: object
+  memorize_internal_service_authentication_user.UpdateUserRequest:
+    properties:
+      email:
+        maxLength: 100
+        type: string
+      password:
+        maxLength: 300
+        type: string
+      username:
+        maxLength: 100
+        type: string
+    required:
+    - email
+    - password
+    - username
+    type: object
+info:
+  contact: {}
+paths:
+  /users:
+    get:
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Page size
+        in: query
+        name: page_size
+        type: integer
+      responses: {}
+      tags:
+      - Users
+    post:
+      parameters:
+      - description: entity to create
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/memorize_internal_service_authentication_user.CreateUserRequest'
+      responses: {}
+      tags:
+      - Users
+  /users/{id}:
+    delete:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      tags:
+      - Users
+    get:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      tags:
+      - Users
+    put:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: entity to update
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/memorize_internal_service_authentication_user.UpdateUserRequest'
+      responses: {}
+      tags:
+      - Users
+swagger: "2.0"
