@@ -19,7 +19,22 @@ type UserHandler struct {
 
 func NewUserHandler(userService *user.UserService,
 	validator *validator.Validate) *UserHandler {
-	return &UserHandler{UserService: userService, Validator: validator}
+	return &UserHandler{UserService: userService,
+		Validator: validator,
+	}
+}
+
+func (hndlr *UserHandler) SetRoutes(routerGroup *gin.RouterGroup) *gin.RouterGroup {
+	userRoutes := routerGroup.Group("/users")
+	{
+		userRoutes.GET("", hndlr.ListUsers)
+		userRoutes.GET("/:id", hndlr.GetUserByID)
+		userRoutes.POST("", hndlr.CreateUser)
+		userRoutes.PUT("/:id", hndlr.UpdateUser)
+		userRoutes.DELETE("/:id", hndlr.DeleteUser)
+	}
+
+	return userRoutes
 }
 
 // @Tags Users

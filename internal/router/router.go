@@ -29,21 +29,8 @@ func NewRouter(userHandler *userHandler.UserHandler,
 ) *gin.Engine {
 	router := gin.Default()
 
-	// User routes
-	// userRoutes := router.Group("/users")
-	// {
-	// 	userRoutes.GET("", userHandler.ListUsers)
-	// 	userRoutes.GET("/:id", userHandler.GetUserByID)
-	// 	userRoutes.POST("", userHandler.CreateUser)
-	// 	userRoutes.PUT("/:id", userHandler.UpdateUser)
-	// 	userRoutes.DELETE("/:id", userHandler.DeleteUser)
-	// }
-
-	authRoutes := router.Group("/auth")
-	{
-		authRoutes.POST("/register", authHandler.RegisterUser)
-		authRoutes.POST("/login", authHandler.LoginUser)
-	}
+	unAuthorizedRoutes := router.Group("")
+	_ = authHandler.SetRoutes(unAuthorizedRoutes)
 
 	// Question routes
 	// questionRoutes := router.Group("/questions")
@@ -60,14 +47,7 @@ func NewRouter(userHandler *userHandler.UserHandler,
 	{
 		adminAuthorizedRoutes := authorizedRoutes.Group("/admin")
 		{
-			userRoutes := adminAuthorizedRoutes.Group("/users")
-			{
-				userRoutes.GET("", userHandler.ListUsers)
-				userRoutes.GET("/:id", userHandler.GetUserByID)
-				userRoutes.POST("", userHandler.CreateUser)
-				userRoutes.PUT("/:id", userHandler.UpdateUser)
-				userRoutes.DELETE("/:id", userHandler.DeleteUser)
-			}
+			_ = userHandler.SetRoutes(adminAuthorizedRoutes)
 		}
 	}
 
@@ -101,9 +81,6 @@ var Module = fx.Options(
 		// repositories.NewRepository[models.Question],
 		// questions.NewQuestionService,
 		// controllers.NewQuestionController,
-		// repositories.NewUserRepository,
-		// auths.NewAuthService,
-		// controllers.NewAuthController,
 	),
 	fx.Invoke(runGinServer),
 )

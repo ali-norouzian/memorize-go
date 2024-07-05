@@ -18,6 +18,16 @@ func NewAuthHandler(validator *validator.Validate,
 	return &AuthHandler{Validator: validator, AuthService: authService}
 }
 
+func (hndlr *AuthHandler) SetRoutes(routerGroup *gin.RouterGroup) *gin.RouterGroup {
+	authRoutes := routerGroup.Group("/auth")
+	{
+		authRoutes.POST("/register", hndlr.RegisterUser)
+		authRoutes.POST("/login", hndlr.LoginUser)
+	}
+
+	return authRoutes
+}
+
 // @Tags Authentication
 // @Param user body authentication.RegisterUserRequest true "register"
 // @Router /auth/register [post]
