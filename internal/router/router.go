@@ -5,6 +5,7 @@ import (
 	"memorize/config"
 	authHandler "memorize/internal/handler/authentication"
 	userHandler "memorize/internal/handler/authentication/user"
+	"memorize/internal/middleware"
 	"memorize/internal/model"
 	authenticationModel "memorize/internal/model/authentication"
 	"memorize/internal/repository"
@@ -24,18 +25,19 @@ import (
 
 func NewRouter(userHandler *userHandler.UserHandler,
 	authHandler *authHandler.AuthHandler,
+	authMiddleware *middleware.AuthMiddleware,
 ) *gin.Engine {
 	router := gin.Default()
 
 	// User routes
-	userRoutes := router.Group("/users")
-	{
-		userRoutes.GET("", userHandler.ListUsers)
-		userRoutes.GET("/:id", userHandler.GetUserByID)
-		userRoutes.POST("", userHandler.CreateUser)
-		userRoutes.PUT("/:id", userHandler.UpdateUser)
-		userRoutes.DELETE("/:id", userHandler.DeleteUser)
-	}
+	// userRoutes := router.Group("/users")
+	// {
+	// 	userRoutes.GET("", userHandler.ListUsers)
+	// 	userRoutes.GET("/:id", userHandler.GetUserByID)
+	// 	userRoutes.POST("", userHandler.CreateUser)
+	// 	userRoutes.PUT("/:id", userHandler.UpdateUser)
+	// 	userRoutes.DELETE("/:id", userHandler.DeleteUser)
+	// }
 
 	authRoutes := router.Group("/auth")
 	{
@@ -53,11 +55,21 @@ func NewRouter(userHandler *userHandler.UserHandler,
 	// 	questionRoutes.DELETE("/:id", questionController.DeleteQuestion)
 	// }
 
-	// router.POST("/auth/login", authController.Login)
-	// auth := router.Group("/auth").Use(auth.AuthMiddleware)
-	// {
-
-	// }
+	authorizedRoutes := router.Group("")
+	authorizedRoutes.Use(authMiddleware.Handle())
+	{
+		adminAuthorizedRoutes := authorizedRoutes.Group("/admin")
+		{
+			userRoutes := adminAuthorizedRoutes.Group("/users")
+			{
+				userRoutes.GET("", userHandler.ListUsers)
+				userRoutes.GET("/:id", userHandler.GetUserByID)
+				userRoutes.POST("", userHandler.CreateUser)
+				userRoutes.PUT("/:id", userHandler.UpdateUser)
+				userRoutes.DELETE("/:id", userHandler.DeleteUser)
+			}
+		}
+	}
 
 	// Swagger endpoint with custom configuration
 	router.GET("/swagger/*any",
@@ -73,6 +85,7 @@ var Module = fx.Options(
 		config.NewConfig,
 		NewRouter,
 		jwt.NewJwt,
+		middleware.NewAuthMiddleware,
 
 		model.NewListOfDbModels,
 		database.NewDatabase,

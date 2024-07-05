@@ -15,45 +15,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/auth/login": {
-            "post": {
-                "tags": [
-                    "Authentication"
-                ],
-                "parameters": [
-                    {
-                        "description": "login",
-                        "name": "user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/memorize_internal_service_authentication.LoginUserRequest"
-                        }
-                    }
-                ],
-                "responses": {}
-            }
-        },
-        "/auth/register": {
-            "post": {
-                "tags": [
-                    "Authentication"
-                ],
-                "parameters": [
-                    {
-                        "description": "register",
-                        "name": "user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/memorize_internal_service_authentication.RegisterUserRequest"
-                        }
-                    }
-                ],
-                "responses": {}
-            }
-        },
-        "/users": {
+        "/admin/users": {
             "get": {
                 "tags": [
                     "Users"
@@ -92,7 +54,7 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/users/{id}": {
+        "/admin/users/{id}": {
             "get": {
                 "tags": [
                     "Users"
@@ -143,6 +105,44 @@ const docTemplate = `{
                         "name": "id",
                         "in": "path",
                         "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "parameters": [
+                    {
+                        "description": "login",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/memorize_internal_service_authentication.LoginUserRequest"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "parameters": [
+                    {
+                        "description": "register",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/memorize_internal_service_authentication.RegisterUserRequest"
+                        }
                     }
                 ],
                 "responses": {}
