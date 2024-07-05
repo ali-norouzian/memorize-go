@@ -15,6 +15,101 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/admin/question": {
+            "get": {
+                "tags": [
+                    "Question"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page size",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {}
+            },
+            "post": {
+                "tags": [
+                    "Question"
+                ],
+                "parameters": [
+                    {
+                        "description": "entity to create",
+                        "name": "Question",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/memorize_internal_service_question.CreateQuestionRequest"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/admin/question/{id}": {
+            "get": {
+                "tags": [
+                    "Question"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            },
+            "put": {
+                "tags": [
+                    "Question"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "entity to update",
+                        "name": "Question",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/memorize_internal_service_question.UpdateQuestionRequest"
+                        }
+                    }
+                ],
+                "responses": {}
+            },
+            "delete": {
+                "tags": [
+                    "Question"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/admin/users": {
             "get": {
                 "tags": [
@@ -225,6 +320,48 @@ const docTemplate = `{
                 "username": {
                     "type": "string",
                     "maxLength": 100
+                }
+            }
+        },
+        "memorize_internal_service_question.CreateQuestionRequest": {
+            "type": "object",
+            "required": [
+                "answer_text",
+                "question_text"
+            ],
+            "properties": {
+                "answer_text": {
+                    "type": "string",
+                    "maxLength": 1000
+                },
+                "question_text": {
+                    "type": "string",
+                    "maxLength": 100
+                },
+                "title": {
+                    "type": "string",
+                    "maxLength": 50
+                }
+            }
+        },
+        "memorize_internal_service_question.UpdateQuestionRequest": {
+            "type": "object",
+            "required": [
+                "answer_text",
+                "question_text"
+            ],
+            "properties": {
+                "answer_text": {
+                    "type": "string",
+                    "maxLength": 1000
+                },
+                "question_text": {
+                    "type": "string",
+                    "maxLength": 100
+                },
+                "title": {
+                    "type": "string",
+                    "maxLength": 50
                 }
             }
         }

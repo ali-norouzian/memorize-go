@@ -55,6 +55,36 @@ definitions:
     - password
     - username
     type: object
+  memorize_internal_service_question.CreateQuestionRequest:
+    properties:
+      answer_text:
+        maxLength: 1000
+        type: string
+      question_text:
+        maxLength: 100
+        type: string
+      title:
+        maxLength: 50
+        type: string
+    required:
+    - answer_text
+    - question_text
+    type: object
+  memorize_internal_service_question.UpdateQuestionRequest:
+    properties:
+      answer_text:
+        maxLength: 1000
+        type: string
+      question_text:
+        maxLength: 100
+        type: string
+      title:
+        maxLength: 50
+        type: string
+    required:
+    - answer_text
+    - question_text
+    type: object
 externalDocs:
   description: Open Swagger UI
   url: http://localhost:8000/swagger/index.html
@@ -64,6 +94,68 @@ info:
   title: Memorize API
   version: "1.0"
 paths:
+  /admin/question:
+    get:
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Page size
+        in: query
+        name: page_size
+        type: integer
+      responses: {}
+      tags:
+      - Question
+    post:
+      parameters:
+      - description: entity to create
+        in: body
+        name: Question
+        required: true
+        schema:
+          $ref: '#/definitions/memorize_internal_service_question.CreateQuestionRequest'
+      responses: {}
+      tags:
+      - Question
+  /admin/question/{id}:
+    delete:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      tags:
+      - Question
+    get:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      tags:
+      - Question
+    put:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: entity to update
+        in: body
+        name: Question
+        required: true
+        schema:
+          $ref: '#/definitions/memorize_internal_service_question.UpdateQuestionRequest'
+      responses: {}
+      tags:
+      - Question
   /admin/users:
     get:
       parameters:

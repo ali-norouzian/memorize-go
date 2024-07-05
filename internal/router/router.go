@@ -5,11 +5,13 @@ import (
 	"memorize/config"
 	authHandler "memorize/internal/handler/authentication"
 	userHandler "memorize/internal/handler/authentication/user"
+	questionHandler "memorize/internal/handler/question"
 	"memorize/internal/middleware"
 	"memorize/internal/model"
 	"memorize/internal/repository"
 	"memorize/internal/service/authentication"
 	userService "memorize/internal/service/authentication/user"
+	questionService "memorize/internal/service/question"
 	"memorize/pkg/database"
 	"memorize/pkg/security/jwt"
 	"memorize/pkg/validator"
@@ -25,6 +27,7 @@ import (
 func NewRouter(userHandler *userHandler.UserHandler,
 	authHandler *authHandler.AuthHandler,
 	authMiddleware *middleware.AuthMiddleware,
+	questionHandler *questionHandler.QuestionHandler,
 ) *gin.Engine {
 	router := gin.Default()
 
@@ -47,6 +50,7 @@ func NewRouter(userHandler *userHandler.UserHandler,
 		adminAuthorizedRoutes := authorizedRoutes.Group("/admin")
 		{
 			_ = userHandler.SetRoutes(adminAuthorizedRoutes)
+			_ = questionHandler.SetRoutes(adminAuthorizedRoutes)
 		}
 	}
 
@@ -77,9 +81,9 @@ var Module = fx.Options(
 		authentication.NewAuthService,
 		authHandler.NewAuthHandler,
 
-		// repositories.NewRepository[models.Question],
-		// questions.NewQuestionService,
-		// controllers.NewQuestionController,
+		repository.NewRepository[model.Question],
+		questionService.NewQuestionService,
+		questionHandler.NewQuestionHandler,
 	),
 	fx.Invoke(runGinServer),
 )
