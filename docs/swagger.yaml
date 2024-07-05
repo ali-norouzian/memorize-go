@@ -1,4 +1,16 @@
 definitions:
+  memorize_internal_service_authentication.LoginUserRequest:
+    properties:
+      password:
+        maxLength: 100
+        type: string
+      username:
+        maxLength: 100
+        type: string
+    required:
+    - password
+    - username
+    type: object
   memorize_internal_service_authentication.RegisterUserRequest:
     properties:
       email:
@@ -46,6 +58,18 @@ definitions:
 info:
   contact: {}
 paths:
+  /auth/login:
+    post:
+      parameters:
+      - description: login
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/memorize_internal_service_authentication.LoginUserRequest'
+      responses: {}
+      tags:
+      - Authentication
   /auth/register:
     post:
       parameters:

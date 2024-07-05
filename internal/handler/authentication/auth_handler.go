@@ -42,26 +42,26 @@ func (hndlr *AuthHandler) RegisterUser(c *gin.Context) {
 	c.JSON(http.StatusCreated, resp)
 }
 
-// @Tags Users
-// @Param user body user.CreateUserRequest true "entity to create"
-// @Router /users [post]
-// func (ctrl *UserHandler) CreateUser(c *gin.Context) {
-// 	var req user.CreateUserRequest
-// 	if err := c.ShouldBindJSON(&req); err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-// 		return
-// 	}
+// @Tags Authentication
+// @Param user body authentication.LoginUserRequest true "login"
+// @Router /auth/login [post]
+func (hndlr *AuthHandler) LoginUser(c *gin.Context) {
+	var req authentication.LoginUserRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
-// 	if err := ctrl.Validator.Struct(req); err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-// 		return
-// 	}
+	if err := hndlr.Validator.Struct(req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
-// 	resp, err := ctrl.UserService.CreateUser(&req)
-// 	if err != nil {
-// 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-// 		return
-// 	}
+	resp, err := hndlr.AuthService.LoginUser(&req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 
-// 	c.JSON(http.StatusCreated, resp)
-// }
+	c.JSON(http.StatusOK, resp)
+}

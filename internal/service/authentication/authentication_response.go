@@ -1,6 +1,11 @@
 package authentication
 
 type RegisterUserResponse struct {
-	Email    string `json:"email" validate:"required,email,max=100"`
-	Username string `json:"username" validate:"required,max=100"`
+	Email    string
+	Username string
+}
+
+type LoginUserResponse struct {
+	Username string
+	Token    string
 }

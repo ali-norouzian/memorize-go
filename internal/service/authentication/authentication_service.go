@@ -1,8 +1,10 @@
 package authentication
 
 import (
+	"errors"
 	"memorize/internal/model/authentication"
 	"memorize/internal/repository"
+	"memorize/pkg/security/jwt"
 	"strings"
 
 	"github.com/jinzhu/copier"
@@ -10,10 +12,12 @@ import (
 
 type AuthService struct {
 	repository.IRepository[authentication.User]
+	*jwt.Jwt
 }
 
-func NewAuthService(userRepo repository.IRepository[authentication.User]) *AuthService {
-	return &AuthService{IRepository: userRepo}
+func NewAuthService(userRepo repository.IRepository[authentication.User],
+	jwt *jwt.Jwt) *AuthService {
+	return &AuthService{IRepository: userRepo, Jwt: jwt}
 }
 
 func (srvc *AuthService) RegisterUser(req *RegisterUserRequest) (*RegisterUserResponse, error) {
@@ -30,6 +34,35 @@ func (srvc *AuthService) RegisterUser(req *RegisterUserRequest) (*RegisterUserRe
 	var resp RegisterUserResponse
 	if err := copier.Copy(&resp, user); err != nil {
 		return nil, err
+	}
+
+	return &resp, nil
+}
+
+func (srvc *AuthService) LoginUser(req *LoginUserRequest) (*LoginUserResponse, error) {
+	user := authentication.User{
+		Username: req.Username,
+	}
+	if err := srvc.First(&user); err != nil {
+		return nil, err
+	}
+
+	if user.Password != req.Password {
+		return nil, errors.New("invalid credentials")
+	}
+
+	claims := jwt.Claims{
+		UserID:   user.ID,
+		Username: user.Username,
+	}
+	token, err := srvc.GenerateJwt(&claims)
+	if err != nil {
+		return nil, err
+	}
+
+	resp := LoginUserResponse{
+		Username: user.Username,
+		Token:    token,
 	}
 
 	return &resp, nil

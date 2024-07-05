@@ -15,6 +15,25 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "parameters": [
+                    {
+                        "description": "login",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/memorize_internal_service_authentication.LoginUserRequest"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/auth/register": {
             "post": {
                 "tags": [
@@ -131,6 +150,23 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "memorize_internal_service_authentication.LoginUserRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "maxLength": 100
+                },
+                "username": {
+                    "type": "string",
+                    "maxLength": 100
+                }
+            }
+        },
         "memorize_internal_service_authentication.RegisterUserRequest": {
             "type": "object",
             "required": [
