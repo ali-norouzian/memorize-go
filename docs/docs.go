@@ -159,7 +159,7 @@ const docTemplate = `{
             "properties": {
                 "password": {
                     "type": "string",
-                    "maxLength": 100
+                    "maxLength": 70
                 },
                 "username": {
                     "type": "string",
@@ -180,7 +180,7 @@ const docTemplate = `{
                 },
                 "password": {
                     "type": "string",
-                    "maxLength": 300
+                    "maxLength": 70
                 }
             }
         },
@@ -198,7 +198,7 @@ const docTemplate = `{
                 },
                 "password": {
                     "type": "string",
-                    "maxLength": 300
+                    "maxLength": 70
                 },
                 "username": {
                     "type": "string",
@@ -220,7 +220,7 @@ const docTemplate = `{
                 },
                 "password": {
                     "type": "string",
-                    "maxLength": 300
+                    "maxLength": 70
                 },
                 "username": {
                     "type": "string",

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"memorize/internal/model/authentication"
 	"memorize/internal/repository"
+	"memorize/pkg/security/hash"
 	"memorize/pkg/security/jwt"
 	"strings"
 
@@ -26,6 +27,11 @@ func (srvc *AuthService) RegisterUser(req *RegisterUserRequest) (*RegisterUserRe
 		return nil, err
 	}
 	user.Username = strings.Split(user.Email, "@")[0]
+	hashedPassword, err := hash.HashPassword(req.Password)
+	if err != nil {
+		return nil, err
+	}
+	user.Password = hashedPassword
 
 	if err := srvc.Create(&user); err != nil {
 		return nil, err
@@ -47,7 +53,7 @@ func (srvc *AuthService) LoginUser(req *LoginUserRequest) (*LoginUserResponse, e
 		return nil, err
 	}
 
-	if user.Password != req.Password {
+	if !hash.CheckPasswordHash(req.Password, user.Password) {
 		return nil, errors.New("invalid credentials")
 	}
 

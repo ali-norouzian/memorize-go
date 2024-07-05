@@ -2,7 +2,7 @@ definitions:
   memorize_internal_service_authentication.LoginUserRequest:
     properties:
       password:
-        maxLength: 100
+        maxLength: 70
         type: string
       username:
         maxLength: 100
@@ -17,7 +17,7 @@ definitions:
         maxLength: 100
         type: string
       password:
-        maxLength: 300
+        maxLength: 70
         type: string
     required:
     - email
@@ -29,7 +29,7 @@ definitions:
         maxLength: 100
         type: string
       password:
-        maxLength: 300
+        maxLength: 70
         type: string
       username:
         maxLength: 100
@@ -45,7 +45,7 @@ definitions:
         maxLength: 100
         type: string
       password:
-        maxLength: 300
+        maxLength: 70
         type: string
       username:
         maxLength: 100

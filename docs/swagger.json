@@ -148,7 +148,7 @@
             "properties": {
                 "password": {
                     "type": "string",
-                    "maxLength": 100
+                    "maxLength": 70
                 },
                 "username": {
                     "type": "string",
@@ -169,7 +169,7 @@
                 },
                 "password": {
                     "type": "string",
-                    "maxLength": 300
+                    "maxLength": 70
                 }
             }
         },
@@ -187,7 +187,7 @@
                 },
                 "password": {
                     "type": "string",
-                    "maxLength": 300
+                    "maxLength": 70
                 },
                 "username": {
                     "type": "string",
@@ -209,7 +209,7 @@
                 },
                 "password": {
                     "type": "string",
-                    "maxLength": 300
+                    "maxLength": 70
                 },
                 "username": {
                     "type": "string",
