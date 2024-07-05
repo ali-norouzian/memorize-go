@@ -1,8 +1,11 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "title": "Memorize API",
+        "contact": {},
+        "version": "1.0"
     },
+    "host": "localhost:8000",
     "paths": {
         "/admin/users": {
             "get": {
@@ -217,5 +220,9 @@
                 }
             }
         }
+    },
+    "externalDocs": {
+        "description": "Open Swagger UI",
+        "url": "http://localhost:8000/swagger/index.html"
     }
 }

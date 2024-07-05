@@ -55,8 +55,14 @@ definitions:
     - password
     - username
     type: object
+externalDocs:
+  description: Open Swagger UI
+  url: http://localhost:8000/swagger/index.html
+host: localhost:8000
 info:
   contact: {}
+  title: Memorize API
+  version: "1.0"
 paths:
   /admin/users:
     get:

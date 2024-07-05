@@ -228,16 +228,20 @@ const docTemplate = `{
                 }
             }
         }
+    },
+    "externalDocs": {
+        "description": "Open Swagger UI",
+        "url": "http://localhost:8000/swagger/index.html"
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
-	Host:             "",
+	Version:          "1.0",
+	Host:             "localhost:8000",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "",
+	Title:            "Memorize API",
 	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
