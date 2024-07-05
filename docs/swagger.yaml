@@ -1,11 +1,35 @@
 definitions:
+  memorize_internal_service_authentication.LoginUserRequest:
+    properties:
+      password:
+        maxLength: 70
+        type: string
+      username:
+        maxLength: 100
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  memorize_internal_service_authentication.RegisterUserRequest:
+    properties:
+      email:
+        maxLength: 100
+        type: string
+      password:
+        maxLength: 70
+        type: string
+    required:
+    - email
+    - password
+    type: object
   memorize_internal_service_authentication_user.CreateUserRequest:
     properties:
       email:
         maxLength: 100
         type: string
       password:
-        maxLength: 300
+        maxLength: 70
         type: string
       username:
         maxLength: 100
@@ -21,7 +45,7 @@ definitions:
         maxLength: 100
         type: string
       password:
-        maxLength: 300
+        maxLength: 70
         type: string
       username:
         maxLength: 100
@@ -34,7 +58,7 @@ definitions:
 info:
   contact: {}
 paths:
-  /users:
+  /admin/users:
     get:
       parameters:
       - description: Page
@@ -59,7 +83,7 @@ paths:
       responses: {}
       tags:
       - Users
-  /users/{id}:
+  /admin/users/{id}:
     delete:
       parameters:
       - description: id
@@ -96,4 +120,28 @@ paths:
       responses: {}
       tags:
       - Users
+  /auth/login:
+    post:
+      parameters:
+      - description: login
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/memorize_internal_service_authentication.LoginUserRequest'
+      responses: {}
+      tags:
+      - Authentication
+  /auth/register:
+    post:
+      parameters:
+      - description: register
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/memorize_internal_service_authentication.RegisterUserRequest'
+      responses: {}
+      tags:
+      - Authentication
 swagger: "2.0"

@@ -15,7 +15,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/users": {
+        "/admin/users": {
             "get": {
                 "tags": [
                     "Users"
@@ -54,7 +54,7 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/users/{id}": {
+        "/admin/users/{id}": {
             "get": {
                 "tags": [
                     "Users"
@@ -109,9 +109,81 @@ const docTemplate = `{
                 ],
                 "responses": {}
             }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "parameters": [
+                    {
+                        "description": "login",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/memorize_internal_service_authentication.LoginUserRequest"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "parameters": [
+                    {
+                        "description": "register",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/memorize_internal_service_authentication.RegisterUserRequest"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
         }
     },
     "definitions": {
+        "memorize_internal_service_authentication.LoginUserRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "maxLength": 70
+                },
+                "username": {
+                    "type": "string",
+                    "maxLength": 100
+                }
+            }
+        },
+        "memorize_internal_service_authentication.RegisterUserRequest": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "maxLength": 100
+                },
+                "password": {
+                    "type": "string",
+                    "maxLength": 70
+                }
+            }
+        },
         "memorize_internal_service_authentication_user.CreateUserRequest": {
             "type": "object",
             "required": [
@@ -126,7 +198,7 @@ const docTemplate = `{
                 },
                 "password": {
                     "type": "string",
-                    "maxLength": 300
+                    "maxLength": 70
                 },
                 "username": {
                     "type": "string",
@@ -148,7 +220,7 @@ const docTemplate = `{
                 },
                 "password": {
                     "type": "string",
-                    "maxLength": 300
+                    "maxLength": 70
                 },
                 "username": {
                     "type": "string",

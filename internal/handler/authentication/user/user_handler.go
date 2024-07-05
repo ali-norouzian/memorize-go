@@ -19,13 +19,28 @@ type UserHandler struct {
 
 func NewUserHandler(userService *user.UserService,
 	validator *validator.Validate) *UserHandler {
-	return &UserHandler{UserService: userService, Validator: validator}
+	return &UserHandler{UserService: userService,
+		Validator: validator,
+	}
+}
+
+func (hndlr *UserHandler) SetRoutes(routerGroup *gin.RouterGroup) *gin.RouterGroup {
+	userRoutes := routerGroup.Group("/users")
+	{
+		userRoutes.GET("", hndlr.ListUsers)
+		userRoutes.GET("/:id", hndlr.GetUserByID)
+		userRoutes.POST("", hndlr.CreateUser)
+		userRoutes.PUT("/:id", hndlr.UpdateUser)
+		userRoutes.DELETE("/:id", hndlr.DeleteUser)
+	}
+
+	return userRoutes
 }
 
 // @Tags Users
 // @Param page query int false "Page"
 // @Param page_size query int false "Page size"
-// @Router /users [get]
+// @Router /admin/users [get]
 func (ctrl *UserHandler) ListUsers(c *gin.Context) {
 	filters := []repository.Filter{}
 	if username := c.Query("username"); username != "" {
@@ -62,7 +77,7 @@ func (ctrl *UserHandler) ListUsers(c *gin.Context) {
 
 // @Tags Users
 // @Param id path int true "id"
-// @Router /users/{id} [get]
+// @Router /admin/users/{id} [get]
 func (ctrl *UserHandler) GetUserByID(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -81,7 +96,7 @@ func (ctrl *UserHandler) GetUserByID(c *gin.Context) {
 
 // @Tags Users
 // @Param user body user.CreateUserRequest true "entity to create"
-// @Router /users [post]
+// @Router /admin/users [post]
 func (ctrl *UserHandler) CreateUser(c *gin.Context) {
 	var req user.CreateUserRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -106,7 +121,7 @@ func (ctrl *UserHandler) CreateUser(c *gin.Context) {
 // @Tags Users
 // @Param id path uint true "id"
 // @Param user body user.UpdateUserRequest true "entity to update"
-// @Router /users/{id} [put]
+// @Router /admin/users/{id} [put]
 func (ctrl *UserHandler) UpdateUser(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -137,7 +152,7 @@ func (ctrl *UserHandler) UpdateUser(c *gin.Context) {
 
 // @Tags Users
 // @Param id path uint true "id"
-// @Router /users/{id} [delete]
+// @Router /admin/users/{id} [delete]
 func (ctrl *UserHandler) DeleteUser(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
