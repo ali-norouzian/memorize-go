@@ -1,7 +1,7 @@
 package user
 
 import (
-	"memorize/internal/model/authentication"
+	"memorize/internal/model"
 	"memorize/internal/repository"
 	"memorize/pkg/reflection"
 
@@ -10,10 +10,10 @@ import (
 )
 
 type UserService struct {
-	repository.IRepository[authentication.User]
+	repository.IRepository[model.User]
 }
 
-func NewUserService(userRepo repository.IRepository[authentication.User]) *UserService {
+func NewUserService(userRepo repository.IRepository[model.User]) *UserService {
 	return &UserService{IRepository: userRepo}
 }
 
@@ -31,13 +31,13 @@ func (s *UserService) ListUsers(req repository.PaginateRequest) (*repository.Pag
 	return &resp, nil
 }
 
-func (s *UserService) GetUserByID(userID uint) (*authentication.User, error) {
-	user := &authentication.User{Model: gorm.Model{ID: userID}}
+func (s *UserService) GetUserByID(userID uint) (*model.User, error) {
+	user := &model.User{Model: gorm.Model{ID: userID}}
 	return user, s.First(user)
 }
 
 func (s *UserService) CreateUser(req *CreateUserRequest) (*CreateUserResponse, error) {
-	var user authentication.User
+	var user model.User
 	if err := copier.Copy(&user, req); err != nil {
 		return nil, err
 	}
@@ -50,7 +50,7 @@ func (s *UserService) CreateUser(req *CreateUserRequest) (*CreateUserResponse, e
 }
 
 func (s *UserService) UpdateUser(req *UpdateUserRequest) error {
-	if err := s.UpdateFields(&authentication.User{}, reflection.StructToMap(*req)); err != nil {
+	if err := s.UpdateFields(&model.User{}, reflection.StructToMap(*req)); err != nil {
 		return err
 	}
 

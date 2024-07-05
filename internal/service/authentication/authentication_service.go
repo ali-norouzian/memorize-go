@@ -2,7 +2,7 @@ package authentication
 
 import (
 	"errors"
-	"memorize/internal/model/authentication"
+	"memorize/internal/model"
 	"memorize/internal/repository"
 	"memorize/pkg/security/hash"
 	"memorize/pkg/security/jwt"
@@ -12,17 +12,17 @@ import (
 )
 
 type AuthService struct {
-	repository.IRepository[authentication.User]
+	repository.IRepository[model.User]
 	*jwt.Jwt
 }
 
-func NewAuthService(userRepo repository.IRepository[authentication.User],
+func NewAuthService(userRepo repository.IRepository[model.User],
 	jwt *jwt.Jwt) *AuthService {
 	return &AuthService{IRepository: userRepo, Jwt: jwt}
 }
 
 func (srvc *AuthService) RegisterUser(req *RegisterUserRequest) (*RegisterUserResponse, error) {
-	var user authentication.User
+	var user model.User
 	if err := copier.Copy(&user, req); err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (srvc *AuthService) RegisterUser(req *RegisterUserRequest) (*RegisterUserRe
 }
 
 func (srvc *AuthService) LoginUser(req *LoginUserRequest) (*LoginUserResponse, error) {
-	user := authentication.User{
+	user := model.User{
 		Username: req.Username,
 	}
 	if err := srvc.First(&user); err != nil {

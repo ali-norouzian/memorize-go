@@ -7,7 +7,6 @@ import (
 	userHandler "memorize/internal/handler/authentication/user"
 	"memorize/internal/middleware"
 	"memorize/internal/model"
-	authenticationModel "memorize/internal/model/authentication"
 	"memorize/internal/repository"
 	"memorize/internal/service/authentication"
 	userService "memorize/internal/service/authentication/user"
@@ -71,7 +70,7 @@ var Module = fx.Options(
 		database.NewDatabase,
 		validator.NewValidator,
 
-		repository.NewRepository[authenticationModel.User],
+		repository.NewRepository[model.User],
 		userService.NewUserService,
 		userHandler.NewUserHandler,
 

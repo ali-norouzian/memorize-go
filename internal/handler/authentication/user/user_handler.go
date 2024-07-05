@@ -1,7 +1,7 @@
 package user
 
 import (
-	"memorize/internal/model/authentication"
+	"memorize/internal/model"
 	"memorize/internal/repository"
 	"memorize/internal/service/authentication/user"
 	"net/http"
@@ -160,7 +160,7 @@ func (ctrl *UserHandler) DeleteUser(c *gin.Context) {
 		return
 	}
 
-	user := authentication.User{Model: gorm.Model{ID: uint(id)}}
+	user := model.User{Model: gorm.Model{ID: uint(id)}}
 
 	if err := ctrl.UserService.DeleteUser(user.ID); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
