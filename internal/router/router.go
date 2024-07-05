@@ -3,10 +3,12 @@ package router
 import (
 	"log"
 	"memorize/config"
+	authHandler "memorize/internal/handler/authentication"
 	userHandler "memorize/internal/handler/authentication/user"
 	"memorize/internal/model"
-	"memorize/internal/model/authentication"
+	authenticationModel "memorize/internal/model/authentication"
 	"memorize/internal/repository"
+	"memorize/internal/service/authentication"
 	userService "memorize/internal/service/authentication/user"
 	"memorize/pkg/database"
 	"memorize/pkg/validator"
@@ -20,6 +22,7 @@ import (
 )
 
 func NewRouter(userHandler *userHandler.UserHandler,
+	authHandler *authHandler.AuthHandler,
 ) *gin.Engine {
 	router := gin.Default()
 
@@ -31,6 +34,12 @@ func NewRouter(userHandler *userHandler.UserHandler,
 		userRoutes.POST("", userHandler.CreateUser)
 		userRoutes.PUT("/:id", userHandler.UpdateUser)
 		userRoutes.DELETE("/:id", userHandler.DeleteUser)
+	}
+
+	authRoutes := router.Group("/auth")
+	{
+		authRoutes.POST("/register", authHandler.RegisterUser)
+		// authRoutes.POST("/login", authHandler.ListUsers)
 	}
 
 	// Question routes
@@ -67,9 +76,14 @@ var Module = fx.Options(
 		database.NewDatabase,
 		validator.NewValidator,
 
-		repository.NewRepository[authentication.User],
-		userService.NewUserService,
+		repository.NewRepository[authenticationModel.User],
 		userHandler.NewUserHandler,
+
+		authentication.NewAuthService,
+		authHandler.NewAuthHandler,
+
+		userService.NewUserService,
+
 		// repositories.NewRepository[models.Question],
 		// questions.NewQuestionService,
 		// controllers.NewQuestionController,
