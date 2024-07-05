@@ -6,13 +6,14 @@ import (
 	"memorize/pkg/reflection"
 
 	"github.com/jinzhu/copier"
+	"gorm.io/gorm"
 )
 
 type UserService struct {
 	repository.IRepository[authentication.User]
 }
 
-func NewUserService(userRepo *repository.Repository[authentication.User]) *UserService {
+func NewUserService(userRepo repository.IRepository[authentication.User]) *UserService {
 	return &UserService{IRepository: userRepo}
 }
 
@@ -31,7 +32,8 @@ func (s *UserService) ListUsers(req repository.PaginateRequest) (*repository.Pag
 }
 
 func (s *UserService) GetUserByID(userID uint) (*authentication.User, error) {
-	return s.FindByID(userID)
+	user := &authentication.User{Model: gorm.Model{ID: userID}}
+	return user, s.First(user)
 }
 
 func (s *UserService) CreateUser(req *CreateUserRequest) (*CreateUserResponse, error) {

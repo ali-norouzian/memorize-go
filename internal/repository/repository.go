@@ -4,12 +4,31 @@ import (
 	"gorm.io/gorm"
 )
 
+type IRepository[T any] interface {
+	First(where *T) error
+	Find(where *T) error
+	Create(entity *T) error
+	Update(entity *T) error
+	UpdateFields(entity *T, fields map[string]interface{}) error
+	DeleteByID(id uint) error
+	FindByID(id uint) (*T, error)
+	FindAll(req PaginateRequest) (PaginatedResult[T], error)
+}
+
 type Repository[T any] struct {
 	DB *gorm.DB
 }
 
-func NewRepository[T any](db *gorm.DB) *Repository[T] {
+func NewRepository[T any](db *gorm.DB) IRepository[T] {
 	return &Repository[T]{DB: db}
+}
+
+func (r *Repository[T]) First(where *T) error {
+	return r.DB.First(where, where).Error
+}
+
+func (r *Repository[T]) Find(where *T) error {
+	return r.DB.Find(where, where).Error
 }
 
 func (r *Repository[T]) Create(entity *T) error {

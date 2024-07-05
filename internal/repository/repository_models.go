@@ -27,12 +27,3 @@ type Filter struct {
 type CreateEntityResponse struct {
 	ID uint
 }
-
-type IRepository[T any] interface {
-	Create(entity *T) error
-	Update(entity *T) error
-	UpdateFields(entity *T, fields map[string]interface{}) error
-	DeleteByID(id uint) error
-	FindByID(id uint) (*T, error)
-	FindAll(req PaginateRequest) (PaginatedResult[T], error)
-}
