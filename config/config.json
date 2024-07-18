@@ -1,6 +1,6 @@
 {
     "postgreDbConfig":{
-        "username":"admin",
+        "username":"postgres",
         "password":"admin",
         "host":"localhost",
         "port":5432,
