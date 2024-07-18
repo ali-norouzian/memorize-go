@@ -242,4 +242,9 @@ paths:
       responses: {}
       tags:
       - Authentication
+  /box/getstatus:
+    get:
+      responses: {}
+      tags:
+      - Box
 swagger: "2.0"

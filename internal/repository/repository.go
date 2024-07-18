@@ -7,12 +7,14 @@ import (
 type IRepository[T any] interface {
 	First(where *T) error
 	Find(where *T) error
+	FindAlls(dest *[]T, where *T) error
 	Create(entity *T) error
 	Update(entity *T) error
 	UpdateFields(entity *T, fields map[string]interface{}) error
 	DeleteByID(id uint) error
 	FindByID(id uint) (*T, error)
 	FindAll(req PaginateRequest) (PaginatedResult[T], error)
+	Count(where *T) (*int64, error)
 }
 
 type Repository[T any] struct {
@@ -29,6 +31,10 @@ func (r *Repository[T]) First(where *T) error {
 
 func (r *Repository[T]) Find(where *T) error {
 	return r.DB.Find(where, where).Error
+}
+
+func (r *Repository[T]) FindAlls(dest *[]T, where *T) error {
+	return r.DB.Find(dest, where).Error
 }
 
 func (r *Repository[T]) Create(entity *T) error {
@@ -98,4 +104,15 @@ func (r *Repository[T]) FindAll(req PaginateRequest) (PaginatedResult[T], error)
 		PageSize:  req.Pagination.PageSize,
 		PageCount: pageCount,
 	}, nil
+}
+
+func (r *Repository[T]) Count(where *T) (*int64, error) {
+	var count int64
+
+	err := r.DB.Model(where).Where(where).Count(&count).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return &count, nil
 }

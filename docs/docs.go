@@ -242,6 +242,14 @@ const docTemplate = `{
                 ],
                 "responses": {}
             }
+        },
+        "/box/getstatus": {
+            "get": {
+                "tags": [
+                    "Box"
+                ],
+                "responses": {}
+            }
         }
     },
     "definitions": {

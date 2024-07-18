@@ -3,6 +3,7 @@ package router
 import (
 	"log"
 	"memorize/config"
+	"memorize/internal/handler"
 	authHandler "memorize/internal/handler/authentication"
 	userHandler "memorize/internal/handler/authentication/user"
 	questionHandler "memorize/internal/handler/question"
@@ -11,6 +12,7 @@ import (
 	"memorize/internal/repository"
 	"memorize/internal/service/authentication"
 	userService "memorize/internal/service/authentication/user"
+	"memorize/internal/service/box"
 	questionService "memorize/internal/service/question"
 	"memorize/pkg/database"
 	"memorize/pkg/security/jwt"
@@ -28,21 +30,12 @@ func NewRouter(userHandler *userHandler.UserHandler,
 	authHandler *authHandler.AuthHandler,
 	authMiddleware *middleware.AuthMiddleware,
 	questionHandler *questionHandler.QuestionHandler,
+	boxHandler *handler.BoxHandler,
 ) *gin.Engine {
 	router := gin.Default()
 
 	unAuthorizedRoutes := router.Group("")
 	_ = authHandler.SetRoutes(unAuthorizedRoutes)
-
-	// Question routes
-	// questionRoutes := router.Group("/questions")
-	// {
-	// 	questionRoutes.GET("", questionController.ListQuestions)
-	// 	questionRoutes.GET("/:id", questionController.GetQuestionByID)
-	// 	questionRoutes.POST("", questionController.CreateQuestion)
-	// 	questionRoutes.PUT("/:id", questionController.UpdateQuestion)
-	// 	questionRoutes.DELETE("/:id", questionController.DeleteQuestion)
-	// }
 
 	authorizedRoutes := router.Group("")
 	authorizedRoutes.Use(authMiddleware.Handle())
@@ -52,6 +45,8 @@ func NewRouter(userHandler *userHandler.UserHandler,
 			_ = userHandler.SetRoutes(adminAuthorizedRoutes)
 			_ = questionHandler.SetRoutes(adminAuthorizedRoutes)
 		}
+
+		boxHandler.SetRoutes(authorizedRoutes)
 	}
 
 	// Swagger endpoint with custom configuration
@@ -84,6 +79,10 @@ var Module = fx.Options(
 		repository.NewRepository[model.Question],
 		questionService.NewQuestionService,
 		questionHandler.NewQuestionHandler,
+
+		repository.NewRepository[model.QuestionUser],
+		box.NewBoxService,
+		handler.NewBoxHandler,
 	),
 	fx.Invoke(runGinServer),
 )
